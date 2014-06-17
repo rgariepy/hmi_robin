@@ -50,6 +50,7 @@ ros::Publisher soundPub;	// publisher for sound_play requests
 string audioPath;	// path to audio folder
 string jsonPath;	// path to json file with audio references
 string language;	// language code
+string mplayer_args;	// extra args to mplayer
 bool mplayer;		// using mplayer for audio output
 
 json_t* root;	// root node of json structure
@@ -84,6 +85,10 @@ int main(int argc, char** argv) {
   }
   if(!n.getParam("jsonPath", jsonPath)) {
 	  ROS_ERROR("Parameter jsonPath not found");
+	  ros::shutdown();
+  }
+  if(!n.getParam("mplayer_args", mplayer_args)) {
+	  ROS_ERROR("Parameter mplayer_args not found");
 	  ros::shutdown();
   }
   if(!n.getParam("mplayer", mplayer)) {
@@ -216,6 +221,8 @@ void stringCallback(const std_msgs::String msg) {
 	
 	if(mplayer) {
 		string cmd_str = "mplayer ";
+        cmd_str = cmd_str + mplayer_args;
+        cmd_str = cmd_str + " ";
 		cmd_str = cmd_str + path_to_file;
 		system(cmd_str.c_str());
 	} else {
