@@ -239,7 +239,7 @@ void stringCallback(const std_msgs::String msg) {
 void createFilename() {
 	int i;
 	char ch;
-	for(i = 0; i < 50; i++) {
+	for(i = 0; i < 46; i++) {
 		int ran = rand() % 62;
 		ch = (char) ran;
 		if(ch < 10) {
@@ -251,5 +251,6 @@ void createFilename() {
 		}
 		filename[i] = ch;
 	}
-	filename[50] = 0;
+  strcpy(&filename[46],".mp3\0");
+  //filename[50] = 0;
 }
